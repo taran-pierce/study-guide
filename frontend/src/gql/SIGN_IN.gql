@@ -1,0 +1,16 @@
+mutation AuthenticateUserWithPassword($email: String!, $password: String!) {
+  authenticateUserWithPassword(email: $email, password: $password) {
+    ... on UserAuthenticationWithPasswordSuccess {
+      item {
+        id
+        name
+        email
+      }
+      sessionToken
+    }
+
+    ... on UserAuthenticationWithPasswordFailure {
+      message
+    }
+  }
+}

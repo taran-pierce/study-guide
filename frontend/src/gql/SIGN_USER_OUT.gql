@@ -1,0 +1,3 @@
+mutation SIGN_USER_OUT {
+  endSession
+}

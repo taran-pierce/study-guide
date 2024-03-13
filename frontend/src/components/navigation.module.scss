@@ -1,0 +1,39 @@
+.navigation {
+  background: green;
+  text-align: right;
+
+  ul {
+    opacity: 0;
+    max-height: 0;
+    list-style: none;
+    padding: 0;
+
+    li {
+      a {
+        display: block;
+        padding: 1rem;
+      }
+    }
+
+    &.open {
+      max-height: 1000px;
+      opacity: 1;
+    }
+  }
+}
+
+@media(min-width: 992px) {
+
+  .navigation {
+    .menuToggle {
+      display: none;
+    }
+
+    ul {
+      opacity: 1;
+      max-height: 1000px;
+      display: grid;
+      grid-template-columns: auto auto auto auto;
+    }
+  }
+}

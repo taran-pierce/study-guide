@@ -1,0 +1,39 @@
+:root {
+  --color-white: #fff;
+  --color-black: #222;
+  --shadow-light: rgba(0,0,0,.3);
+  --shadow-medium: rgba(0,0,0,.5);
+  --shadow-dark: rgba(0,0,0,.8);
+  --padding-base: 1rem;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-size: 1.8rem;
+}
+
+main {
+  padding: var(--padding-base);
+  background-color: pink;
+}
+
+a {
+  color: blue;
+  text-decoration: underline;
+}
+

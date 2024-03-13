@@ -1,0 +1,9 @@
+.header {
+  background: red;
+
+  .navigationWrapper {
+    display: grid;
+    grid-template-columns: auto auto;
+    background: purple;
+  }
+}

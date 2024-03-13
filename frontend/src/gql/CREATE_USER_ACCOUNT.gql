@@ -1,0 +1,7 @@
+mutation CREATE_USER_ACCOUNT($data: UserCreateInput!) {
+  createUser(data: $data) {
+    id
+    email
+    name
+  }
+}
