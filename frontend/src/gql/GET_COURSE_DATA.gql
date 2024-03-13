@@ -1,0 +1,27 @@
+query($where: CourseWhereUniqueInput!) {
+  course(where: $where) {
+    id
+    name
+    testResults {
+      score
+      id
+      title
+      user {
+        id
+        name
+      }
+    }
+    questions {
+      id
+      question
+      answer {
+        id
+        title
+      }
+      wrongAnswer {
+        title
+        id
+      }
+    }
+  }
+}

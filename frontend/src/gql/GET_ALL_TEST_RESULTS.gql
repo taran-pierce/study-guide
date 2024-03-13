@@ -1,0 +1,12 @@
+query {
+  testResults {
+    id
+    score
+    title
+    user {
+      id
+      name
+      email
+    }
+  }
+}

@@ -1,0 +1,18 @@
+query {
+  courses {
+    name
+    id
+    questions {
+      id
+      question
+      answer {
+        id
+        title
+      }
+      wrongAnswer {
+        id
+        title
+      }
+    }
+  }
+}
