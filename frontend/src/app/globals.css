@@ -32,6 +32,17 @@ main {
   background-color: pink;
 }
 
+label {
+  display: block;
+  padding: 1rem 0;
+}
+
+form {
+  button {
+    display: block;
+  }
+}
+
 a {
   color: blue;
   text-decoration: underline;

@@ -1,0 +1,18 @@
+query($where: QuestionWhereUniqueInput!) {
+  question(where: $where) {
+    id
+    question
+    answer {
+      id
+      title
+    }      
+    wrongAnswer {
+      id
+      title
+    }
+    course {
+      id
+      name
+    }
+  }
+}

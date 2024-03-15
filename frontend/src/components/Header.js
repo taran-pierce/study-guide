@@ -2,8 +2,6 @@
 
 import Navigation from "./Navigation";
 
-// import { useProfile } from "../utils/useProfile";
-
 import styles from './header.module.scss';
 
 export default function Header() {
@@ -13,7 +11,7 @@ export default function Header() {
     >
       <div className={styles.navigationWrapper}>
         <div>
-          <h1>Study Guide Logo</h1>
+          <h1><a href="/">Study Guide Logo</a></h1>
         </div>
         <Navigation />
       </div>

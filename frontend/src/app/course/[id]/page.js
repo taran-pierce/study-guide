@@ -1,18 +1,27 @@
 "use client"
 
-import { useQuery } from "@apollo/client";
+import { useRouter } from 'next/navigation';
+import { useProfile } from '../../../utils/useProfile';
+
+import {
+  useQuery,
+  useMutation,
+} from "@apollo/client";
 
 import GET_COURSE_DATA from "../../../gql/GET_COURSE_DATA.gql";
-
+import CREATE_TEST_RESULT from "../../../gql/CREATE_TEST_RESULT.gql";
 
 export default function CoursePage({
   params,
 }) {
   const { id } = params;
+  const router = useRouter();
+
+  const { userProfileData } = useProfile();
 
   const {
     loading,
-    data,
+    data = {},
     error,
   } = useQuery(GET_COURSE_DATA, {
     variables: {
@@ -22,52 +31,55 @@ export default function CoursePage({
     }
   });
 
-  if (!data) {
-    return <p>No data found...</p>
+  const [createTestResult, {
+    data: testResultData,
+    error: testResultError,
+    loading: testResultLoading,
+  }] = useMutation(CREATE_TEST_RESULT);
+
+  const { course = {} } = data;
+
+  const { questions = [] } = course;
+
+  async function handleClick(e) {
+    e.preventDefault();
+
+    const result = await createTestResult({
+      variables: {
+        data: {
+          completed: "false",
+          user: {
+            connect: {
+              id: userProfileData.id,
+            }
+          },
+          course: {
+            connect: {
+              id: course.id,
+            }
+          },
+          score: "0",
+          title: course.name,
+        }
+      }
+    });
+
+    router.push(`/course/${id}/${questions[0].id}?nextQuestion=${questions[1].id}&currentQuestion=1&totalQuestions=${questions.length}&testId=${result.data.createTestResult.id}`);
   }
-
-  const { course } = data;
-
-  const { questions } = course;
-
-  const combinedQuestions = questions.map((question) => {
-    const mainQuestion = [{ question: question.question }];
-
-    return mainQuestion.concat(question.answer, question.wrongAnswer);
-  });
 
   return (
     <main>
       <h1>{course.name}</h1>
-      <p>Each question will end up going on a separate page.</p>
-      <ul>
-        {combinedQuestions.map((question) => {
-          const mainQuestion = question.filter((q) => q.question)[0];
-          const possibleAnswers = question.filter((q) => !q.question);
-
-          console.log({
-            mainQuestion,
-            possibleAnswers,
-          });
-
-          const shuffledArray = possibleAnswers.sort((a, b) => 0.5 - Math.random());
-
-          return (
-            <li>
-              <h2>Question: {mainQuestion.question}</h2>
-              <ul>
-                {shuffledArray.map((answer) => {
-                  return (
-                    <li>
-                      {answer.title}
-                    </li>
-                  )
-                })}
-              </ul>
-            </li>
-          )
-        })}
-      </ul>
+      <p>Are you ready to take this course bitch?</p>
+      <p>If so, click the link below to start a test!</p>
+      {questions && questions[0] && questions[0].id && (
+        <p>
+          <button
+            type="button"
+            onClick={(e) => handleClick(e)}
+          >Start Test</button>
+        </p>
+      )}
     </main>
   );
 }

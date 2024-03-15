@@ -9,6 +9,8 @@ type User {
   createdAt: DateTime
   testResults(where: TestResultWhereInput! = {}, orderBy: [TestResultOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TestResultWhereUniqueInput): [TestResult!]
   testResultsCount(where: TestResultWhereInput! = {}): Int
+  questionResults(where: QuestionResultWhereInput! = {}, orderBy: [QuestionResultOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: QuestionResultWhereUniqueInput): [QuestionResult!]
+  questionResultsCount(where: QuestionResultWhereInput! = {}): Int
 }
 
 type PasswordState {
@@ -31,6 +33,7 @@ input UserWhereInput {
   email: StringFilter
   createdAt: DateTimeNullableFilter
   testResults: TestResultManyRelationFilter
+  questionResults: QuestionResultManyRelationFilter
 }
 
 input IDFilter {
@@ -95,6 +98,12 @@ input TestResultManyRelationFilter {
   none: TestResultWhereInput
 }
 
+input QuestionResultManyRelationFilter {
+  every: QuestionResultWhereInput
+  some: QuestionResultWhereInput
+  none: QuestionResultWhereInput
+}
+
 input UserOrderByInput {
   id: OrderDirection
   name: OrderDirection
@@ -113,6 +122,7 @@ input UserUpdateInput {
   password: String
   createdAt: DateTime
   testResults: TestResultRelateToManyForUpdateInput
+  questionResults: QuestionResultRelateToManyForUpdateInput
 }
 
 input TestResultRelateToManyForUpdateInput {
@@ -120,6 +130,13 @@ input TestResultRelateToManyForUpdateInput {
   set: [TestResultWhereUniqueInput!]
   create: [TestResultCreateInput!]
   connect: [TestResultWhereUniqueInput!]
+}
+
+input QuestionResultRelateToManyForUpdateInput {
+  disconnect: [QuestionResultWhereUniqueInput!]
+  set: [QuestionResultWhereUniqueInput!]
+  create: [QuestionResultCreateInput!]
+  connect: [QuestionResultWhereUniqueInput!]
 }
 
 input UserUpdateArgs {
@@ -133,11 +150,17 @@ input UserCreateInput {
   password: String
   createdAt: DateTime
   testResults: TestResultRelateToManyForCreateInput
+  questionResults: QuestionResultRelateToManyForCreateInput
 }
 
 input TestResultRelateToManyForCreateInput {
   create: [TestResultCreateInput!]
   connect: [TestResultWhereUniqueInput!]
+}
+
+input QuestionResultRelateToManyForCreateInput {
+  create: [QuestionResultCreateInput!]
+  connect: [QuestionResultWhereUniqueInput!]
 }
 
 type Course {
@@ -211,6 +234,8 @@ type Question {
   answer: Answer
   wrongAnswer(where: WrongAnswerWhereInput! = {}, orderBy: [WrongAnswerOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: WrongAnswerWhereUniqueInput): [WrongAnswer!]
   wrongAnswerCount(where: WrongAnswerWhereInput! = {}): Int
+  result(where: QuestionResultWhereInput! = {}, orderBy: [QuestionResultOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: QuestionResultWhereUniqueInput): [QuestionResult!]
+  resultCount(where: QuestionResultWhereInput! = {}): Int
 }
 
 input QuestionWhereUniqueInput {
@@ -226,6 +251,7 @@ input QuestionWhereInput {
   course: CourseManyRelationFilter
   answer: AnswerWhereInput
   wrongAnswer: WrongAnswerManyRelationFilter
+  result: QuestionResultManyRelationFilter
 }
 
 input CourseManyRelationFilter {
@@ -250,6 +276,7 @@ input QuestionUpdateInput {
   course: CourseRelateToManyForUpdateInput
   answer: AnswerRelateToOneForUpdateInput
   wrongAnswer: WrongAnswerRelateToManyForUpdateInput
+  result: QuestionResultRelateToManyForUpdateInput
 }
 
 input CourseRelateToManyForUpdateInput {
@@ -282,6 +309,7 @@ input QuestionCreateInput {
   course: CourseRelateToManyForCreateInput
   answer: AnswerRelateToOneForCreateInput
   wrongAnswer: WrongAnswerRelateToManyForCreateInput
+  result: QuestionResultRelateToManyForCreateInput
 }
 
 input CourseRelateToManyForCreateInput {
@@ -395,6 +423,9 @@ type TestResult {
   score: String
   user: User
   course: Course
+  questionResult(where: QuestionResultWhereInput! = {}, orderBy: [QuestionResultOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: QuestionResultWhereUniqueInput): [QuestionResult!]
+  questionResultCount(where: QuestionResultWhereInput! = {}): Int
+  completed: String
 }
 
 input TestResultWhereUniqueInput {
@@ -410,12 +441,15 @@ input TestResultWhereInput {
   score: StringFilter
   user: UserWhereInput
   course: CourseWhereInput
+  questionResult: QuestionResultManyRelationFilter
+  completed: StringFilter
 }
 
 input TestResultOrderByInput {
   id: OrderDirection
   title: OrderDirection
   score: OrderDirection
+  completed: OrderDirection
 }
 
 input TestResultUpdateInput {
@@ -423,6 +457,8 @@ input TestResultUpdateInput {
   score: String
   user: UserRelateToOneForUpdateInput
   course: CourseRelateToOneForUpdateInput
+  questionResult: QuestionResultRelateToManyForUpdateInput
+  completed: String
 }
 
 input UserRelateToOneForUpdateInput {
@@ -447,6 +483,8 @@ input TestResultCreateInput {
   score: String
   user: UserRelateToOneForCreateInput
   course: CourseRelateToOneForCreateInput
+  questionResult: QuestionResultRelateToManyForCreateInput
+  completed: String
 }
 
 input UserRelateToOneForCreateInput {
@@ -457,6 +495,79 @@ input UserRelateToOneForCreateInput {
 input CourseRelateToOneForCreateInput {
   create: CourseCreateInput
   connect: CourseWhereUniqueInput
+}
+
+type QuestionResult {
+  id: ID!
+  title: String
+  result(where: QuestionWhereInput! = {}, orderBy: [QuestionOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: QuestionWhereUniqueInput): [Question!]
+  resultCount(where: QuestionWhereInput! = {}): Int
+  resultResponse: String
+  user(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
+  userCount(where: UserWhereInput! = {}): Int
+  test(where: TestResultWhereInput! = {}, orderBy: [TestResultOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TestResultWhereUniqueInput): [TestResult!]
+  testCount(where: TestResultWhereInput! = {}): Int
+}
+
+input QuestionResultWhereUniqueInput {
+  id: ID
+}
+
+input QuestionResultWhereInput {
+  AND: [QuestionResultWhereInput!]
+  OR: [QuestionResultWhereInput!]
+  NOT: [QuestionResultWhereInput!]
+  id: IDFilter
+  title: StringFilter
+  result: QuestionManyRelationFilter
+  resultResponse: StringFilter
+  user: UserManyRelationFilter
+  test: TestResultManyRelationFilter
+}
+
+input UserManyRelationFilter {
+  every: UserWhereInput
+  some: UserWhereInput
+  none: UserWhereInput
+}
+
+input QuestionResultOrderByInput {
+  id: OrderDirection
+  title: OrderDirection
+  resultResponse: OrderDirection
+}
+
+input QuestionResultUpdateInput {
+  title: String
+  result: QuestionRelateToManyForUpdateInput
+  resultResponse: String
+  user: UserRelateToManyForUpdateInput
+  test: TestResultRelateToManyForUpdateInput
+}
+
+input UserRelateToManyForUpdateInput {
+  disconnect: [UserWhereUniqueInput!]
+  set: [UserWhereUniqueInput!]
+  create: [UserCreateInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
+input QuestionResultUpdateArgs {
+  where: QuestionResultWhereUniqueInput!
+  data: QuestionResultUpdateInput!
+}
+
+input QuestionResultCreateInput {
+  title: String
+  result: QuestionRelateToManyForCreateInput
+  resultResponse: String
+  user: UserRelateToManyForCreateInput
+  test: TestResultRelateToManyForCreateInput
+}
+
+input UserRelateToManyForCreateInput {
+  create: [UserCreateInput!]
+  connect: [UserWhereUniqueInput!]
 }
 
 """
@@ -501,9 +612,16 @@ type Mutation {
   updateTestResults(data: [TestResultUpdateArgs!]!): [TestResult]
   deleteTestResult(where: TestResultWhereUniqueInput!): TestResult
   deleteTestResults(where: [TestResultWhereUniqueInput!]!): [TestResult]
+  createQuestionResult(data: QuestionResultCreateInput!): QuestionResult
+  createQuestionResults(data: [QuestionResultCreateInput!]!): [QuestionResult]
+  updateQuestionResult(where: QuestionResultWhereUniqueInput!, data: QuestionResultUpdateInput!): QuestionResult
+  updateQuestionResults(data: [QuestionResultUpdateArgs!]!): [QuestionResult]
+  deleteQuestionResult(where: QuestionResultWhereUniqueInput!): QuestionResult
+  deleteQuestionResults(where: [QuestionResultWhereUniqueInput!]!): [QuestionResult]
   endSession: Boolean!
   authenticateUserWithPassword(email: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
+  checkQuestion(id: ID!, data: JSON): QuestionResult
 }
 
 union UserAuthenticationWithPasswordResult = UserAuthenticationWithPasswordSuccess | UserAuthenticationWithPasswordFailure
@@ -542,6 +660,9 @@ type Query {
   testResults(where: TestResultWhereInput! = {}, orderBy: [TestResultOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TestResultWhereUniqueInput): [TestResult!]
   testResult(where: TestResultWhereUniqueInput!): TestResult
   testResultsCount(where: TestResultWhereInput! = {}): Int
+  questionResults(where: QuestionResultWhereInput! = {}, orderBy: [QuestionResultOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: QuestionResultWhereUniqueInput): [QuestionResult!]
+  questionResult(where: QuestionResultWhereUniqueInput!): QuestionResult
+  questionResultsCount(where: QuestionResultWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }

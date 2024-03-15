@@ -24,14 +24,15 @@ __export(keystone_exports, {
 });
 module.exports = __toCommonJS(keystone_exports);
 var import_config = require("dotenv/config");
-var import_core2 = require("@keystone-6/core");
+var import_core3 = require("@keystone-6/core");
 
 // schema.ts
 var import_core = require("@keystone-6/core");
+var import_core2 = require("@keystone-6/core");
 var import_access = require("@keystone-6/core/access");
 var import_fields = require("@keystone-6/core/fields");
 var lists = {
-  User: (0, import_core.list)({
+  User: (0, import_core2.list)({
     // WARNING
     //   for this starter project, anyone can create, query, update and delete anything
     //   if you want to prevent random people on the internet from accessing your data,
@@ -60,10 +61,14 @@ var lists = {
       testResults: (0, import_fields.relationship)({
         ref: "TestResult.user",
         many: true
+      }),
+      questionResults: (0, import_fields.relationship)({
+        ref: "QuestionResult.user",
+        many: true
       })
     }
   }),
-  Course: (0, import_core.list)({
+  Course: (0, import_core2.list)({
     access: import_access.allowAll,
     fields: {
       name: (0, import_fields.text)({
@@ -81,7 +86,7 @@ var lists = {
       })
     }
   }),
-  Question: (0, import_core.list)({
+  Question: (0, import_core2.list)({
     access: import_access.allowAll,
     ui: {
       labelField: "question"
@@ -102,10 +107,14 @@ var lists = {
       wrongAnswer: (0, import_fields.relationship)({
         ref: "WrongAnswer.question",
         many: true
+      }),
+      result: (0, import_fields.relationship)({
+        ref: "QuestionResult.result",
+        many: true
       })
     }
   }),
-  Answer: (0, import_core.list)({
+  Answer: (0, import_core2.list)({
     access: import_access.allowAll,
     fields: {
       title: (0, import_fields.text)(),
@@ -114,7 +123,7 @@ var lists = {
       })
     }
   }),
-  WrongAnswer: (0, import_core.list)({
+  WrongAnswer: (0, import_core2.list)({
     access: import_access.allowAll,
     fields: {
       question: (0, import_fields.relationship)({
@@ -124,7 +133,7 @@ var lists = {
       title: (0, import_fields.text)()
     }
   }),
-  TestResult: (0, import_core.list)({
+  TestResult: (0, import_core2.list)({
     access: import_access.allowAll,
     fields: {
       title: (0, import_fields.text)(),
@@ -135,10 +144,87 @@ var lists = {
       }),
       course: (0, import_fields.relationship)({
         ref: "Course.testResults"
+      }),
+      questionResult: (0, import_fields.relationship)({
+        ref: "QuestionResult.test",
+        many: true
+      }),
+      completed: (0, import_fields.text)()
+    }
+  }),
+  QuestionResult: (0, import_core2.list)({
+    access: import_access.allowAll,
+    fields: {
+      title: (0, import_fields.text)(),
+      result: (0, import_fields.relationship)({
+        ref: "Question.result",
+        many: true
+      }),
+      resultResponse: (0, import_fields.text)(),
+      user: (0, import_fields.relationship)({
+        ref: "User.questionResults",
+        many: true
+      }),
+      test: (0, import_fields.relationship)({
+        ref: "TestResult.questionResult",
+        many: true
       })
     }
   })
 };
+var extendGraphqlSchema = import_core.graphql.extend((base) => {
+  return {
+    mutation: {
+      checkQuestion: import_core.graphql.field({
+        type: base.object("QuestionResult"),
+        args: {
+          id: import_core.graphql.arg({ type: import_core.graphql.nonNull(import_core.graphql.ID) }),
+          data: import_core.graphql.arg({ type: import_core.graphql.JSON })
+        },
+        async resolve(source, { id, data }, context) {
+          const questionData = await context.query.Question.findMany({
+            where: {
+              id: {
+                equals: id
+              }
+            },
+            query: "id question answer { id title }"
+          });
+          const correctAnswerId = questionData[0].answer.id;
+          const selectedAnswerId = data.answer.id;
+          const questionId = id;
+          const isCorrectAnswer = selectedAnswerId === correctAnswerId;
+          console.log("Question ID: ", questionId);
+          console.log("Selected Answer ID: ", selectedAnswerId);
+          console.log("Correct Answer ID: ", correctAnswerId);
+          console.log("Is correct answer: ", isCorrectAnswer);
+          console.log("data.result: ", data.result);
+          return context.db.QuestionResult.createOne({
+            data: {
+              resultResponse: isCorrectAnswer ? "correct" : "wrong",
+              title: data?.title,
+              user: {
+                connect: {
+                  id: data.user
+                }
+              },
+              test: {
+                connect: {
+                  id: data.result
+                }
+              },
+              result: {
+                connect: {
+                  id
+                }
+              }
+            }
+          });
+        }
+      })
+    }
+  };
+});
 
 // auth.ts
 var import_crypto = require("crypto");
@@ -176,7 +262,7 @@ var session = (0, import_session.statelessSessions)({
 // keystone.ts
 var dbURL = process.env.DATABASE_URL || "";
 var keystone_default = withAuth(
-  (0, import_core2.config)({
+  (0, import_core3.config)({
     server: {
       cors: {
         origin: [
@@ -206,7 +292,8 @@ var keystone_default = withAuth(
       url: dbURL
     },
     lists,
-    session
+    session,
+    extendGraphqlSchema
   })
 );
 //# sourceMappingURL=config.js.map

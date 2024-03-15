@@ -34,10 +34,14 @@ export default function DashboardPage() {
       <div>
         <div>
           <h4>Previous Results</h4>
-          {testResultsData.testResults.length > 0 && (
-            <p>Show that data</p>
-          )}
-          {testResultsData.testResults.length === 0 && (
+          {testResultsData?.testResults.length > 0 && testResultsData?.testResults.map((result) => (
+            <div>
+              {console.log({result})}
+              <h5>{result.title}</h5>
+              <p>Score: {result.score}</p>
+            </div>
+          ))}
+          {testResultsData?.testResults.length === 0 && (
             <p>No results...</p>
           )}
         </div>

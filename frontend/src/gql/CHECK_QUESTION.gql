@@ -1,0 +1,12 @@
+mutation($checkQuestionId: ID!, $data: JSON) {
+  checkQuestion(id: $checkQuestionId, data: $data) {
+    id
+    title
+    result {
+      id
+      result {
+        resultResponse
+      }
+    }
+  }
+}

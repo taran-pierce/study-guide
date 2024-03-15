@@ -1,0 +1,24 @@
+mutation($data: TestResultCreateInput!) {
+  createTestResult(data: $data) {
+    id
+    score
+    title
+    completed
+    course {
+      id
+      name
+      questions {
+        id
+        question
+        answer {
+          id
+          title
+        }
+        wrongAnswer {
+          id
+          title
+        }
+      }
+    }
+  }
+}

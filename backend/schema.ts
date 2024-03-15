@@ -4,7 +4,7 @@
 // This file is where we define the lists, fields and hooks for our data.
 // If you want to learn more about how lists are configured, please read
 // - https://keystonejs.com/docs/config/lists
-
+import { graphql } from '@keystone-6/core';
 import { list } from '@keystone-6/core';
 import { allowAll } from '@keystone-6/core/access';
 
@@ -60,6 +60,10 @@ export const lists: Lists = {
         ref: 'TestResult.user',
         many: true,
       }),
+      questionResults: relationship({
+        ref: 'QuestionResult.user',
+        many: true,
+      }),
     },
   }),
   Course: list({
@@ -102,6 +106,10 @@ export const lists: Lists = {
         ref: 'WrongAnswer.question',
         many: true,
       }),
+      result: relationship({
+        ref: 'QuestionResult.result',
+        many: true,
+      }),
     }
   }),
   Answer: list({
@@ -135,6 +143,89 @@ export const lists: Lists = {
       course: relationship({
         ref: 'Course.testResults',
       }),
+      questionResult: relationship({
+        ref: 'QuestionResult.test',
+        many: true,
+      }),
+      completed: text(),
+    }
+  }),
+  QuestionResult: list({
+    access: allowAll,
+    fields: {
+      title: text(),
+      result: relationship({
+        ref: 'Question.result',
+        many: true,
+      }),
+      resultResponse: text(),
+      user: relationship({
+        ref: 'User.questionResults',
+        many: true,
+      }),
+      test: relationship({
+        ref: 'TestResult.questionResult',
+        many: true,
+      }),
     }
   }),
 };
+
+export const extendGraphqlSchema = graphql.extend(base => {
+  return {
+    mutation: {
+      checkQuestion: graphql.field({
+        type: base.object('QuestionResult'),
+        args: {
+          id: graphql.arg({ type: graphql.nonNull(graphql.ID) }),
+          data: graphql.arg({ type: graphql.JSON}),
+        },
+        async resolve (source, { id, data }: any, context) {
+          const questionData = await context.query.Question.findMany({
+            where: {
+              id: {
+                equals: id
+              },
+            },
+            query: 'id question answer { id title }'
+          });
+
+          const correctAnswerId = questionData[0].answer.id;
+          const selectedAnswerId = data.answer.id;
+          const questionId = id;
+
+          const isCorrectAnswer = selectedAnswerId === correctAnswerId;
+
+          console.log('Question ID: ', questionId);
+          console.log('Selected Answer ID: ', selectedAnswerId);
+          console.log('Correct Answer ID: ', correctAnswerId);
+          console.log('Is correct answer: ', isCorrectAnswer);
+
+          console.log('data.result: ', data.result);
+
+          return context.db.QuestionResult.createOne({
+            data: {
+              resultResponse: isCorrectAnswer ? 'correct' : 'wrong',
+              title: data?.title,
+              user: {
+                connect: {
+                  id: data.user,
+                }
+              },
+              test: {
+                connect: {
+                  id: data.result,
+                }
+              },
+              result: {
+                connect: {
+                  id: id
+                }
+              }
+            }
+          });
+        },
+      }),
+    },
+  }
+});
