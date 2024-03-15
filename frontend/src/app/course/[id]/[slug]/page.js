@@ -16,7 +16,6 @@ import GET_SINGLE_QUESTION from "../../../../gql/GET_SINGLE_QUESTION.gql";
 import CHECK_QUESTION from "../../../../gql/CHECK_QUESTION.gql";
 import GET_ALL_COURSES from "../../../../gql/GET_ALL_COURSES.gql";
 
-
 export default function CoursePage({
   params,
 }) {
@@ -105,12 +104,11 @@ export default function CoursePage({
   return (
     <main>
       <h1>Question: {data?.question?.question}</h1>
-      <h2>Possible Answers:</h2>
       <form
         method="POST"
         onSubmit={(e) => handleSubmit(e)}
       >
-        <fieldset>
+        <fieldset className="question-set">
           {possibleAnswers?.map((possibleAnswer) => {
             return (
               <label htmlFor={possibleAnswer?.id} key={possibleAnswer?.id}>
@@ -124,7 +122,10 @@ export default function CoursePage({
               </label>
             )
           })}
-          <button type="submit">Submit Answer</button>
+          <button
+            type="submit"
+            className="button"
+          >Submit Answer</button>
         </fieldset>
       </form>
     </main>

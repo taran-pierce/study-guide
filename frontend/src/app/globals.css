@@ -88,6 +88,21 @@ fieldset {
   margin-top: 1rem;
   padding: 1rem;
   background-color: var(--color-primary-light);
+
+  &.question-set {
+    label {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1rem;
+      text-align: left;
+      align-items: baseline;
+    }
+
+    input {
+      display: block;
+      width: auto;
+    }
+  }
 }
 
 label {
