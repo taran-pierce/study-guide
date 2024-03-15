@@ -17,11 +17,6 @@ export default function QuestionCard({
 }) {
   const [inputs, setInputs] = useState({});
 
-  console.log({
-    mainQuestion,
-    possibleAnswers,
-  });
-
   return (
     <>
       <fieldset>

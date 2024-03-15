@@ -199,6 +199,26 @@ export const extendGraphqlSchema = graphql.extend(base => {
             query: 'id question answer { id title }'
           });
 
+          // get test info
+          // get info about "question"
+          const testData = await context.query.TestResult.findMany({
+            where: {
+              id: {
+                equals: data.result
+              },
+            },
+            query: 'id completed score questionResultCount course { id name questionsCount }'
+          });
+
+          const {
+            course,
+            score,
+            questionResultCount,
+          } = testData[0];
+
+          const measure = 100 / course.questionsCount;
+          let newScore = Number(score);
+
           // grab ids for correct and selected answer
           const correctAnswerId = questionData[0].answer.id;
           const selectedAnswerId = data.answer.id;
@@ -206,11 +226,38 @@ export const extendGraphqlSchema = graphql.extend(base => {
           // if they match, the correct answer was selected 
           const isCorrectAnswer = selectedAnswerId === correctAnswerId;
 
+          // when the answer is correct, update the score
+          if (isCorrectAnswer) {
+            newScore = newScore + measure;
+
+            context.db.TestResult.updateOne({
+              where: {
+                id: data.result,
+              },
+              data: {
+                score: newScore.toString(),
+              }
+            });
+          }
+
+          // the result is increamented after this step, so when this count plus one matches
+          // the questions count, its the last one
+          if ((questionResultCount + 1) === course.questionsCount) {            
+            context.db.TestResult.updateOne({
+              where: {
+                id: data.result,
+              },
+              data: {
+                completed: 'true'
+              }
+            });
+          }
+
           // create entry in DB
           return context.db.QuestionResult.createOne({
             data: {
               resultResponse: isCorrectAnswer ? 'correct' : 'wrong',
-              selectedAnswer: data.resultResponse,
+              selectedAnswer: data?.resultResponse || '',
               title: data?.title,
               user: {
                 connect: {

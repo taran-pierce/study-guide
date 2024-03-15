@@ -198,13 +198,50 @@ var extendGraphqlSchema = import_core.graphql.extend((base) => {
             },
             query: "id question answer { id title }"
           });
+          const testData = await context.query.TestResult.findMany({
+            where: {
+              id: {
+                equals: data.result
+              }
+            },
+            query: "id completed score questionResultCount course { id name questionsCount }"
+          });
+          const {
+            course,
+            score,
+            questionResultCount
+          } = testData[0];
+          const measure = 100 / course.questionsCount;
+          let newScore = Number(score);
+
           const correctAnswerId = questionData[0].answer.id;
           const selectedAnswerId = data.answer.id;
           const isCorrectAnswer = selectedAnswerId === correctAnswerId;
+          if (isCorrectAnswer) {
+            newScore = newScore + measure;
+            context.db.TestResult.updateOne({
+              where: {
+                id: data.result
+              },
+              data: {
+                score: newScore.toString()
+              }
+            });
+          }
+          if (questionResultCount + 1 === course.questionsCount) {
+            context.db.TestResult.updateOne({
+              where: {
+                id: data.result
+              },
+              data: {
+                completed: "true"
+              }
+            });
+          }
           return context.db.QuestionResult.createOne({
             data: {
               resultResponse: isCorrectAnswer ? "correct" : "wrong",
-              selectedAnswer: data.resultResponse,
+              selectedAnswer: data?.resultResponse || "",
               title: data?.title,
               user: {
                 connect: {

@@ -6,11 +6,6 @@ export default function Dashboard({
   testResultsData,
   data,
 }) {
-  console.log({
-    testResultsData,
-    data,
-  });
-
   return (
     <div
       className={styles.dashboard}

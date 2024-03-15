@@ -22,7 +22,7 @@ export default function TestResults({
             className={styles.result}
           >
             <h5>{result.title}</h5>
-            <p>Progress: {result.completed ? 'Completed' : 'In Progress'}</p>
+            <p>Progress: {result.completed === 'true' ? 'Completed' : 'In Progress'}</p>
             <p>Score: {result.score}</p>
             <p>Correct Answers: {correctAnswers}/{questionTotal}</p>
             <a href={`/course/${result.course.id}/results/${result.id}`}>View Results</a>

@@ -56,10 +56,6 @@ export default function CreateAccount() {
       variables: inputs,
     });
 
-    console.log({
-      response,
-    });
-
     router.push(`/signin?newUser=${response?.data?.createUser?.name}`);
   }
 
@@ -72,7 +68,6 @@ export default function CreateAccount() {
   })
 
   async function handleSignOut() {
-    console.log('sign em out');
     await signUserOut();
 
     router.push('/');

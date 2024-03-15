@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.1.5] - 2024-03-15
+### Updated
+- Backend
+  - Updates to schema to tie answers back to questions
+  - Cleaned up logging
+  - Made it add up score
+  - Set when test complete
+
+- Frontend
+  - Cleaned up logging
+  - Set up view courses page
+  - Clean up styling
+
 ## [0.1.4] - 2024-03-15
 ### Updated
 - Backend

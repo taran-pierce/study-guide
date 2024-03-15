@@ -15,12 +15,6 @@ export default function Navigation() {
     signUserOut,
   } = useProfile();
 
-  console.log({
-    userProfileData,
-    isNavigationOpen,
-    toggleNavigationMenuOpen,
-  });
-
   async function handleClick() {
     await signUserOut();
 

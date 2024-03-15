@@ -26,11 +26,6 @@ export default function SignIn() {
     data: userData,
   } = useQuery(GET_CURRENT_USER);
 
-  console.log({
-    userData,
-    userLoading,
-  });
-
   const {
     inputs,
     handleChange,
@@ -75,7 +70,6 @@ export default function SignIn() {
   }
 
   if (userData?.authenticatedItem) {
-    console.log('go to dashboard');
     router.push('/dashboard');
   }
 

@@ -22,12 +22,6 @@ export default function useForm(initial = {}) {
       value = parseInt(value);
     }
 
-    console.log({
-      value,
-      name,
-      type,
-    });
-
     setInputs({
       ...inputs,
       [name]: value,
