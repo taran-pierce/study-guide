@@ -22,10 +22,13 @@ export default function TestResults({
             className={styles.result}
           >
             <h5>{result.title}</h5>
-            <p>Progress: {result.completed === 'true' ? 'Completed' : 'In Progress'}</p>
-            <p>Score: {result.score}</p>
-            <p>Correct Answers: {correctAnswers}/{questionTotal}</p>
-            <a href={`/course/${result.course.id}/results/${result.id}`}>View Results</a>
+            <p><strong>Progress:</strong> {result.completed === 'true' ? 'Completed' : 'In Progress'}</p>
+            <p><strong>Score:</strong> {result.score}</p>
+            <p><strong>Correct Answers:</strong> {correctAnswers}/{questionTotal}</p>
+            <a
+              href={`/course/${result.course.id}/results/${result.id}`}
+              className="button block"
+            >View Results</a>
           </div>
         )
       })}

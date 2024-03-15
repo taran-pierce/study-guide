@@ -11,7 +11,12 @@ export default function Header() {
     >
       <div className={styles.navigationWrapper}>
         <div>
-          <h1><a href="/">Study Guide Logo</a></h1>
+          <img src="/images/icons/study-logo.png" alt="Study Guide" />
+          <h1>
+            <a href="/">
+              Study Guide
+            </a>
+          </h1>
         </div>
         <Navigation />
       </div>

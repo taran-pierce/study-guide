@@ -15,12 +15,14 @@ import CREATE_USER_ACCOUNT from "../gql/CREATE_USER_ACCOUNT.gql";
 import GET_CURRENT_USER from "../gql/GET_CURRENT_USER.gql";
 import SIGN_USER_OUT from "../gql/SIGN_USER_OUT.gql";
 
+import styles from "./createAccount.module.scss";
+
 export default function CreateAccount() {
   const router = useRouter();
 
   const [hasError, setHasError] = useState({
     error: false,
-    message: '',
+    message: "",
   });
 
   const {
@@ -33,9 +35,9 @@ export default function CreateAccount() {
     handleChange,
     resetForm,
   } = useForm({
-    name: '',
-    email: '',
-    password: '',
+    name: "",
+    email: "",
+    password: "",
   });
 
   const [createAccount, {
@@ -70,11 +72,13 @@ export default function CreateAccount() {
   async function handleSignOut() {
     await signUserOut();
 
-    router.push('/');
+    router.push("/");
   }
 
   return (
-    <div>
+    <div
+      className={styles.createAccountWrapper}
+    >
       {data && data.authenticatedItem && (
         <>
           <p>You are already signed in {data?.authenticatedItem.name}, do you want to sign out?</p>

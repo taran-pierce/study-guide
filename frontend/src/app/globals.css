@@ -1,10 +1,22 @@
 :root {
   --color-white: #fff;
   --color-black: #222;
+  --shadow-xlight: rgba(0,0,0,.1);
   --shadow-light: rgba(0,0,0,.3);
   --shadow-medium: rgba(0,0,0,.5);
   --shadow-dark: rgba(0,0,0,.8);
+  --shine-xlight: rgba(255,255,255,.1);
+  --shine-light: rgba(255,255,255,.3);
+  --shine-medium: rgba(255,255,255,.5);
+  --shine-dark: rgba(255,255,255,.8);
   --padding-base: 1rem;
+  --color-primary: #585123;
+  --color-secondary: #F58549;
+  --color-tertiary: #F2A65A;
+  --color-tertiary-light: #EEC170;
+  --color-tertiary-xlight: #f4ddb1;
+  --color-tertiary-dark: #772F1A;
+  --color-primary-light: #c9d2c3;
 }
 
 * {
@@ -29,7 +41,6 @@ body {
 
 main {
   padding: var(--padding-base);
-  background-color: pink;
 }
 
 label {
@@ -44,7 +55,50 @@ form {
 }
 
 a {
-  color: blue;
+  color: var(--color-tertiary);
   text-decoration: underline;
 }
 
+.button {
+  padding: 2rem;
+  border-radius: 10px;
+  border: 2px solid var(--color-tertiary);
+  background-color: var(--color-tertiary-light);
+  outline: 1px solid var(--shadow-light);
+  color: var(--color-tertiary-dark);
+  font-weight: bold;
+  transition: all 1s ease-in-out;
+
+  &:hover {
+    background-color: var(--color-tertiary-xlight);
+    box-shadow: 2px 2px 4px var(--shadow-medium);
+  }
+
+  &.block {
+    display: block;
+    margin-top: 1rem;
+    text-align: center;
+    text-decoration: none;
+  }
+}
+
+fieldset {
+  border: 2px solid var(--color-primary);
+  border-radius: 10px;
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: var(--color-primary-light);
+}
+
+label {
+  font-weight: bold;
+}
+
+input {
+  display: block;
+  margin-top: .5rem;
+  padding: 1.5rem;
+  width: 100%;
+  border: 2px solid var(--color-primary);
+  border-radius: 10px;
+}

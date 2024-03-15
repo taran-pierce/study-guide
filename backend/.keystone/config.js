@@ -213,7 +213,6 @@ var extendGraphqlSchema = import_core.graphql.extend((base) => {
           } = testData[0];
           const measure = 100 / course.questionsCount;
           let newScore = Number(score);
-
           const correctAnswerId = questionData[0].answer.id;
           const selectedAnswerId = data.answer.id;
           const isCorrectAnswer = selectedAnswerId === correctAnswerId;

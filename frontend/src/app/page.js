@@ -24,7 +24,6 @@ export default function Home() {
         )}
         {!userProfileData && !userProfileData?.name && (
           <>
-            <p>Click Sign In if you already have an account or you can <a href="/create-account">Create Account</a></p>
             <SignIn />
           </>
         )}
