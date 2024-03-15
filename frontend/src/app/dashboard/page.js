@@ -1,8 +1,10 @@
 "use client"
 
 import { useProfile } from "../../utils/useProfile";
+import Dashboard from "../../components/Dashboard";
 
 import { useQuery } from "@apollo/client";
+
 import GET_ALL_TEST_RESULTS from "../../gql/GET_ALL_TEST_RESULTS.gql"
 import GET_ALL_COURSES from "../../gql/GET_ALL_COURSES.gql";
 
@@ -31,40 +33,12 @@ export default function DashboardPage() {
     <main>
       <h1>Welcome to the dashboard{userProfileData ? ` ${userProfileData?.name}` : ""}!</h1>
       <p>You ready to get your study on?</p>
-      <div>
-        <div>
-          <h4>Previous Results</h4>
-          {testResultsData?.testResults.length > 0 && testResultsData?.testResults.map((result) => (
-            <div>
-              {console.log({result})}
-              <h5>{result.title}</h5>
-              <p>Score: {result.score}</p>
-            </div>
-          ))}
-          {testResultsData?.testResults.length === 0 && (
-            <p>No results...</p>
-          )}
-        </div>
-        <div>
-          <h4>Available Courses</h4>
-          {data && data?.courses.map((course) => (
-            <div
-              key={course.id}
-            >
-              <h5>{course.name}</h5>
-              <p>Questions: {course.questions.length}</p>
-              <a href={`/course/${course.id}`}>Take Course</a>
-            </div>
-          ))}
-        </div>
-        <div>
-          <h4>Profile</h4>
-          <p>Stuff will go here</p>
-          <p>
-            <a href="/dashboard/profile">View Profile</a>
-          </p>
-        </div>
-      </div>
+      {testResultsData && data && (
+        <Dashboard 
+          testResultsData={testResultsData}
+          data={data}
+        />
+      )}
     </main>
   );
 }

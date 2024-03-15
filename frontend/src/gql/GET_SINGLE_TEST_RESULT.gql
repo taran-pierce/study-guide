@@ -1,0 +1,39 @@
+query($where: TestResultWhereUniqueInput!) {
+  testResult(where: $where) {
+    id
+    completed
+    course {
+      id
+      name
+      questions {
+        id
+        question
+        result {
+          id
+          resultResponse
+        }
+        answer {
+          id
+          title
+        }
+        wrongAnswer {
+          id
+          title
+        }
+      }
+    }
+    questionResult {
+      id
+      resultResponse
+      title
+      test {
+        id
+      }
+    }
+    score
+    title
+    user {
+      id
+    }
+  }
+}

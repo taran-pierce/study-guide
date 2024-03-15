@@ -3,6 +3,14 @@ query {
     id
     score
     title
+    completed
+    questionResult {
+      id
+      resultResponse
+    }
+    course {
+      id
+    }
     user {
       id
       name

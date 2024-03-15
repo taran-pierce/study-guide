@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.1.3] - 2024-03-15
+### Updated
+- Frontend
+  - Fixed up Dashboard
+  - Made single test results viewable
+  - Hooked up a few more things
+
 ## [0.1.2] - 2024-03-14
 ### Added
 - Frontend
