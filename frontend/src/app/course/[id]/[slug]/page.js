@@ -118,7 +118,7 @@ export default function CoursePage({
                   type="radio"
                   id={possibleAnswer?.id}
                   name="question"
-                  value={possibleAnswer.title}
+                  value={possibleAnswer?.title}
                   onChange={handleChange}
                 /> {possibleAnswer?.title}
               </label>

@@ -119,6 +119,10 @@ export const lists: Lists = {
       question: relationship({
         ref: 'Question.answer',
       }),
+      result: relationship({
+        ref: 'QuestionResult.answer',
+        many: true,
+      }),
     }
   }),
   WrongAnswer: list({
@@ -163,6 +167,10 @@ export const lists: Lists = {
         ref: 'User.questionResults',
         many: true,
       }),
+      answer: relationship({
+        ref: 'Answer.result',
+      }),
+      selectedAnswer: text(),
       test: relationship({
         ref: 'TestResult.questionResult',
         many: true,
@@ -181,6 +189,7 @@ export const extendGraphqlSchema = graphql.extend(base => {
           data: graphql.arg({ type: graphql.JSON}),
         },
         async resolve (source, { id, data }: any, context) {
+          // get info about "question"
           const questionData = await context.query.Question.findMany({
             where: {
               id: {
@@ -190,22 +199,18 @@ export const extendGraphqlSchema = graphql.extend(base => {
             query: 'id question answer { id title }'
           });
 
+          // grab ids for correct and selected answer
           const correctAnswerId = questionData[0].answer.id;
           const selectedAnswerId = data.answer.id;
-          const questionId = id;
 
+          // if they match, the correct answer was selected 
           const isCorrectAnswer = selectedAnswerId === correctAnswerId;
 
-          console.log('Question ID: ', questionId);
-          console.log('Selected Answer ID: ', selectedAnswerId);
-          console.log('Correct Answer ID: ', correctAnswerId);
-          console.log('Is correct answer: ', isCorrectAnswer);
-
-          console.log('data.result: ', data.result);
-
+          // create entry in DB
           return context.db.QuestionResult.createOne({
             data: {
               resultResponse: isCorrectAnswer ? 'correct' : 'wrong',
+              selectedAnswer: data.resultResponse,
               title: data?.title,
               user: {
                 connect: {

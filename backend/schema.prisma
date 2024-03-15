@@ -38,10 +38,11 @@ model Question {
 }
 
 model Answer {
-  id         String    @id @default(cuid())
-  title      String    @default("")
-  question   Question? @relation("Answer_question", fields: [questionId], references: [id])
-  questionId String?   @unique @map("question")
+  id         String           @id @default(cuid())
+  title      String           @default("")
+  question   Question?        @relation("Answer_question", fields: [questionId], references: [id])
+  questionId String?          @unique @map("question")
+  result     QuestionResult[] @relation("QuestionResult_answer")
 }
 
 model WrongAnswer {
@@ -71,5 +72,10 @@ model QuestionResult {
   result         Question[]   @relation("Question_result")
   resultResponse String       @default("")
   user           User[]       @relation("QuestionResult_user")
+  answer         Answer?      @relation("QuestionResult_answer", fields: [answerId], references: [id])
+  answerId       String?      @map("answer")
+  selectedAnswer String       @default("")
   test           TestResult[] @relation("QuestionResult_test")
+
+  @@index([answerId])
 }

@@ -25,12 +25,6 @@ export default function TestIdPage({
     }
   });
 
-  console.log({
-    data,
-    loading,
-    error,
-  });
-
   return (
     <main>
       {data && (

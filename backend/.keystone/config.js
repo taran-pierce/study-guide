@@ -120,6 +120,10 @@ var lists = {
       title: (0, import_fields.text)(),
       question: (0, import_fields.relationship)({
         ref: "Question.answer"
+      }),
+      result: (0, import_fields.relationship)({
+        ref: "QuestionResult.answer",
+        many: true
       })
     }
   }),
@@ -165,6 +169,10 @@ var lists = {
         ref: "User.questionResults",
         many: true
       }),
+      answer: (0, import_fields.relationship)({
+        ref: "Answer.result"
+      }),
+      selectedAnswer: (0, import_fields.text)(),
       test: (0, import_fields.relationship)({
         ref: "TestResult.questionResult",
         many: true
@@ -192,16 +200,11 @@ var extendGraphqlSchema = import_core.graphql.extend((base) => {
           });
           const correctAnswerId = questionData[0].answer.id;
           const selectedAnswerId = data.answer.id;
-          const questionId = id;
           const isCorrectAnswer = selectedAnswerId === correctAnswerId;
-          console.log("Question ID: ", questionId);
-          console.log("Selected Answer ID: ", selectedAnswerId);
-          console.log("Correct Answer ID: ", correctAnswerId);
-          console.log("Is correct answer: ", isCorrectAnswer);
-          console.log("data.result: ", data.result);
           return context.db.QuestionResult.createOne({
             data: {
               resultResponse: isCorrectAnswer ? "correct" : "wrong",
+              selectedAnswer: data.resultResponse,
               title: data?.title,
               user: {
                 connect: {

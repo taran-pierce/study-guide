@@ -2,6 +2,8 @@ query($where: TestResultWhereUniqueInput!) {
   testResult(where: $where) {
     id
     completed
+    score
+    title
     course {
       id
       name
@@ -26,12 +28,11 @@ query($where: TestResultWhereUniqueInput!) {
       id
       resultResponse
       title
+      selectedAnswer
       test {
         id
       }
     }
-    score
-    title
     user {
       id
     }

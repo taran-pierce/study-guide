@@ -3,18 +3,9 @@ import styles from "./testResult.module.scss";
 export default function TestResult({
   data,
 }) {
-  console.log({
-    data,
-  });
-
   const totalQuestions = data.questionResult.length;
   const correctAnswers = data.questionResult.filter((result) => result.resultResponse === 'correct');
   const wrongAnswers = data.questionResult.filter((result) => result.resultResponse === 'wrong');
-
-  console.log({
-    correctAnswers,
-    wrongAnswers,
-  });
 
   return (
     <div className={styles.testResult}>
@@ -28,10 +19,10 @@ export default function TestResult({
         <h4>Correct Answers</h4>
         <div className={styles.answers}>
           {correctAnswers && correctAnswers.length > 0 && (
-            correctAnswers.map((answer) => (
-              <div className={styles.questionBlock}>
+            correctAnswers.map((answer, index) => (
+              <div className={styles.questionBlock} key={`${answer.title}-${index}`}>
                 <h4>Question: {answer.title}</h4>
-                <h4>Answer: get from api</h4>
+                <h4>Answer: {answer.selectedAnswer}</h4>
               </div>
             ))
           )}
@@ -45,10 +36,10 @@ export default function TestResult({
             <p>Killing it! No wrong answers!!</p>
           )}
           {wrongAnswers && wrongAnswers.length > 0 && (
-            wrongAnswers.map((answer) => (
-              <div className={styles.questionBlock}>
+            wrongAnswers.map((answer, index) => (
+              <div className={styles.questionBlock} key={`${answer.title}-${index}`}>
                 <h4>Question: {answer.title}</h4>
-                <h4>Answer: get from api</h4>
+                <h4>Answer: {answer.selectedAnswer}</h4>
               </div>
             ))
           )}

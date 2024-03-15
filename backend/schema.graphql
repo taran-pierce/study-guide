@@ -331,6 +331,8 @@ type Answer {
   id: ID!
   title: String
   question: Question
+  result(where: QuestionResultWhereInput! = {}, orderBy: [QuestionResultOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: QuestionResultWhereUniqueInput): [QuestionResult!]
+  resultCount(where: QuestionResultWhereInput! = {}): Int
 }
 
 input AnswerWhereUniqueInput {
@@ -344,6 +346,7 @@ input AnswerWhereInput {
   id: IDFilter
   title: StringFilter
   question: QuestionWhereInput
+  result: QuestionResultManyRelationFilter
 }
 
 input AnswerOrderByInput {
@@ -354,6 +357,7 @@ input AnswerOrderByInput {
 input AnswerUpdateInput {
   title: String
   question: QuestionRelateToOneForUpdateInput
+  result: QuestionResultRelateToManyForUpdateInput
 }
 
 input QuestionRelateToOneForUpdateInput {
@@ -370,6 +374,7 @@ input AnswerUpdateArgs {
 input AnswerCreateInput {
   title: String
   question: QuestionRelateToOneForCreateInput
+  result: QuestionResultRelateToManyForCreateInput
 }
 
 input QuestionRelateToOneForCreateInput {
@@ -505,6 +510,8 @@ type QuestionResult {
   resultResponse: String
   user(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
   userCount(where: UserWhereInput! = {}): Int
+  answer: Answer
+  selectedAnswer: String
   test(where: TestResultWhereInput! = {}, orderBy: [TestResultOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TestResultWhereUniqueInput): [TestResult!]
   testCount(where: TestResultWhereInput! = {}): Int
 }
@@ -522,6 +529,8 @@ input QuestionResultWhereInput {
   result: QuestionManyRelationFilter
   resultResponse: StringFilter
   user: UserManyRelationFilter
+  answer: AnswerWhereInput
+  selectedAnswer: StringFilter
   test: TestResultManyRelationFilter
 }
 
@@ -535,6 +544,7 @@ input QuestionResultOrderByInput {
   id: OrderDirection
   title: OrderDirection
   resultResponse: OrderDirection
+  selectedAnswer: OrderDirection
 }
 
 input QuestionResultUpdateInput {
@@ -542,6 +552,8 @@ input QuestionResultUpdateInput {
   result: QuestionRelateToManyForUpdateInput
   resultResponse: String
   user: UserRelateToManyForUpdateInput
+  answer: AnswerRelateToOneForUpdateInput
+  selectedAnswer: String
   test: TestResultRelateToManyForUpdateInput
 }
 
@@ -562,6 +574,8 @@ input QuestionResultCreateInput {
   result: QuestionRelateToManyForCreateInput
   resultResponse: String
   user: UserRelateToManyForCreateInput
+  answer: AnswerRelateToOneForCreateInput
+  selectedAnswer: String
   test: TestResultRelateToManyForCreateInput
 }
 
