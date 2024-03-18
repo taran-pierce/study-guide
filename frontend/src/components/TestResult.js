@@ -7,6 +7,14 @@ export default function TestResult({
   const correctAnswers = data.questionResult.filter((result) => result.resultResponse === 'correct');
   const wrongAnswers = data.questionResult.filter((result) => result.resultResponse === 'wrong');
 
+  const questions = data.course.questions;
+
+  console.log({
+    data,
+    questions,
+    correctAnswers,
+  });
+
   return (
     <div className={styles.testResult}>
       <h1>Test Results for: {data.title}</h1>
@@ -16,13 +24,14 @@ export default function TestResult({
       <div
         className={styles.questionListWrapper}
       >
-        <h4>Correct Answers</h4>
+        <h3>Correct Answers</h3>
         <div className={styles.answers}>
           {correctAnswers && correctAnswers.length > 0 && (
             correctAnswers.map((answer, index) => (
               <div className={styles.questionBlock} key={`${answer.title}-${index}`}>
-                <h4>Question: {answer.title}</h4>
-                <h4>Answer: {answer.selectedAnswer}</h4>
+                <p><strong>Question:</strong> {answer.title}</p>
+                <p><strong>Answer:</strong> {answer.selectedAnswer}</p>
+                {console.log(questions.filter((question) => question.id === answer.id))}
               </div>
             ))
           )}
@@ -30,7 +39,7 @@ export default function TestResult({
             <p>Looks grim boss, you got no right answers...</p>
           )}
         </div>
-        <h4>Wrong Answers</h4>
+        <h3>Wrong Answers</h3>
         <div className={styles.answers}>
           {!wrongAnswers || (wrongAnswers && wrongAnswers.length === 0) && (
             <p>Killing it! No wrong answers!!</p>
@@ -38,8 +47,12 @@ export default function TestResult({
           {wrongAnswers && wrongAnswers.length > 0 && (
             wrongAnswers.map((answer, index) => (
               <div className={styles.questionBlock} key={`${answer.title}-${index}`}>
-                <h4>Question: {answer.title}</h4>
-                <h4>Answer: {answer.selectedAnswer}</h4>
+                <p><strong>Question:</strong> {answer.title}</p>
+                {console.log(wrongAnswers)}
+                {console.log({
+                  answer,
+                })}
+                <p><strong>Answer:</strong> {answer.selectedAnswer}</p>
               </div>
             ))
           )}

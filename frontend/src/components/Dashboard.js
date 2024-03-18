@@ -15,7 +15,10 @@ export default function Dashboard({
       >
         <h4>Profile Information</h4>
         <p>
-          <a href="/dashboard/profile">View Profile</a>
+          <a
+            href="/dashboard/profile"
+            className="button block"
+          >View Profile</a>
         </p>
       </div>
       {testResultsData?.testResults.length > 0 && testResultsData?.testResults && (
@@ -31,7 +34,10 @@ export default function Dashboard({
           >
             <h5>{course.name}</h5>
             <p>Questions: {course.questions.length}</p>
-            <a href={`/course/${course.id}`}>Take Course</a>
+            <a
+              href={`/course/${course.id}`}
+              className="button block"
+            >Take Course</a>
           </div>
         ))}
       </div>

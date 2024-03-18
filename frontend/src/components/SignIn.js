@@ -13,6 +13,8 @@ import useForm from "../utils/useForm";
 import SIGN_IN from '../gql/SIGN_IN.gql';
 import GET_CURRENT_USER from '../gql/GET_CURRENT_USER.gql';
 
+import styles from './signIn.module.scss';
+
 export default function SignIn() {
   const router = useRouter();
 
@@ -66,15 +68,15 @@ export default function SignIn() {
         error: false,
         message: '',
       });
+
+      router.push('/dashboard');
     }
   }
 
-  if (userData?.authenticatedItem) {
-    router.push('/dashboard');
-  }
-
   return (
-    <div>
+    <div
+     className={styles.signInWrapper}
+    >
       <h2>Sign In</h2>
       {hasError.error && (
         <p>Error: {hasError.message}</p>
@@ -103,7 +105,10 @@ export default function SignIn() {
               onChange={handleChange}
               />
             </label>
-            <button type="submit">Sign In</button>
+            <button
+              type="submit"
+              className="button"
+            >Sign In</button>
           </fieldset>
         </form>
       )}

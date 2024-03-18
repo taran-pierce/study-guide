@@ -28,7 +28,7 @@ export default function Navigation() {
       <button
         type="button"
         onClick={toggleNavigationMenuOpen}
-        className={styles.menuToggle}
+        className={`${styles.menuToggle} ${isNavigationOpen ? styles.open : ''}`}
       >Menu</button>
       <ul
         className={`${isNavigationOpen ? styles.open : ''}`}
@@ -47,6 +47,7 @@ export default function Navigation() {
             <li>
               <button
                 type="button"
+                className="button"
                 onClick={handleClick}
               >Sign Out</button>
             </li>

@@ -76,6 +76,7 @@ export default function CoursePage({
         <p>
           <button
             type="button"
+            className="button block"
             onClick={(e) => handleClick(e)}
           >Start Test</button>
         </p>

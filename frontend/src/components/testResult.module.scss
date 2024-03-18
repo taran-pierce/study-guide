@@ -1,18 +1,32 @@
 .testResult {
+  h3 {
+    color: var(--color-tertiary-dark);
+  }
+
   .questionListWrapper {
-    border: 1px solid var(--color-black);
+    background-color: var(--color-primary-light);
+    margin-top: 1rem;
+    border: 2px solid var(--color-primary);
+    border-radius: 10px;
     display: grid;
     padding: 1rem;
   }
 
   .answers {
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: 1fr 1fr;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--color-tertiary);
+    // display: grid;
+    // gap: 1rem;
+    // grid-template-columns: 1fr 1fr;
+
+    &:last-child {
+      margin-bottom: 0;
+      border-bottom: none;
+    }
 
     .questionBlock {
-      border: 1px solid var(--color-black);
-      padding: 1rem;
+      // border: 1px solid var(--color-black);
+      padding: 1rem 0;
     }
   }
 }
